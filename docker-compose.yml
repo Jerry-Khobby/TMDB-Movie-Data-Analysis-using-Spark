@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  spark-master:
+    image: spark:scala
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    networks:
+      - spark-net
+
+  spark-worker:
+    image: spark:scala
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    networks:
+      - spark-net
+
+networks:
+  spark-net:
+    driver: bridge
