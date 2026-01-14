@@ -6,7 +6,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from datetime import datetime 
+from datetime import datetime
+from pyspark.sql import SparkSession 
 
 load_dotenv()
 
@@ -23,18 +24,12 @@ TIMEOUT = 10
 RETRY_TOTAL = 3
 RETRY_BACKOFF = 1.5
 RATE_LIMIT_SLEEP = 0.25
-LOG_DIR ="../../log"
-os.makedirs(LOG_DIR,exist_ok=True)
+LOG_DIR = "../../log"
+os.makedirs(LOG_DIR, exist_ok=True)
 
 log_file = os.path.join(
-    LOG_DIR,f"tmdb_extraction_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    LOG_DIR, f"tmdb_extraction_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 )
-
-
-
-
-
-
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,6 +41,10 @@ logging.basicConfig(
 )
 
 
+
+spark=(
+    SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate()
+)
 def create_session() -> requests.Session:
     retry_strategy = Retry(
         total=RETRY_TOTAL,
@@ -54,22 +53,17 @@ def create_session() -> requests.Session:
         allowed_methods=["GET"],
         raise_on_status=False
     )
-
     adapter = HTTPAdapter(max_retries=retry_strategy)
     session = requests.Session()
     session.mount("https://", adapter)
     session.mount("http://", adapter)
-
     return session
 
-
 session = create_session()
-
 
 def get_json(url: str) -> dict | None:
     try:
         response = session.get(url, timeout=TIMEOUT)
-
         if response.status_code != 200:
             logging.error(
                 "Non-200 response | status=%s | url=%s",
@@ -77,68 +71,65 @@ def get_json(url: str) -> dict | None:
                 url
             )
             return None
-
         return response.json()
-
     except requests.exceptions.RequestException as exc:
         logging.error("HTTP request failed | url=%s | error=%s", url, exc)
         return None
 
-
-def fetch_movie(movie_id: int) -> dict | None:
+def fetch_movie_with_credits(movie_id: int) -> dict | None:
+    """
+    Fetch movie details and embed credits directly into the movie payload.
+    """
     if movie_id == 0:
         return None
+    url = f"{BASE_URL}{movie_id}?api_key={API_KEY}&append_to_response=credits"
+    movie_data = get_json(url)
 
-    url = f"{BASE_URL}{movie_id}?api_key={API_KEY}"
-    data = get_json(url)
-
-    if not data or "id" not in data:
+    if not movie_data or "id" not in movie_data:
         logging.warning("Invalid movie payload | movie_id=%s", movie_id)
         return None
 
-    return data
+    # Extract cast names (first 5) and director
+    credits = movie_data.get("credits", {})
+    cast = [member.get("name") for member in credits.get("cast", [])[:5]]
+    director = None
+    for member in credits.get("crew", []):
+        if member.get("job") == "Director":
+            director = member.get("name")
+            break
+    movie_data["cast"] = cast
+    movie_data["director"] = director
+
+    # Remove raw credits to reduce redundancy
+    movie_data.pop("credits", None)
+
+    return movie_data
 
 
-def fetch_credits(movie_id: int) -> dict | None:
-    url = f"{BASE_URL}{movie_id}/credits?api_key={API_KEY}"
-    data = get_json(url)
-
-    if not data or "cast" not in data or "crew" not in data:
-        logging.warning("Invalid credits payload | movie_id=%s", movie_id)
-        return None
-
-    return data
-
-
-
-raw_records = []
+records = []
 
 for movie_id in MOVIE_IDS:
     logging.info("Extracting movie_id=%s", movie_id)
-
-    movie_payload = fetch_movie(movie_id)
+    movie_payload = fetch_movie_with_credits(movie_id)
     if not movie_payload:
         continue
 
-    credits_payload = fetch_credits(movie_id)
-
-    raw_records.append({
-        "movie_id": movie_id,
-        "movie": movie_payload,        # full raw movie JSON
-        "credits": credits_payload     # full raw credits JSON
-    })
-
+    records.append(movie_payload)
     time.sleep(RATE_LIMIT_SLEEP)
 
-
-
-df_raw = pd.DataFrame(raw_records)
+df_raw = spark.createDataFrame(records)
 
 output_path = "../../data/raw/tmdb_movies_raw.csv"
-df_raw.to_csv(output_path, index=False)
+(
+    df_raw
+    .write
+    .mode("overwrite")
+    .option("header", "true")
+    .csv(output_path)
+)
 
 logging.info(
     "Raw extraction completed | records=%s | path=%s",
-    len(df_raw),
+    df_raw.count(),
     output_path
 )
