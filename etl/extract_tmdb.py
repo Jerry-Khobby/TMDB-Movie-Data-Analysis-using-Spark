@@ -24,7 +24,7 @@ TIMEOUT = 10
 RETRY_TOTAL = 3
 RETRY_BACKOFF = 1.5
 RATE_LIMIT_SLEEP = 0.25
-LOG_DIR = "../../log"
+LOG_DIR = "/tmdbmovies/app/logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 log_file = os.path.join(
@@ -119,7 +119,7 @@ for movie_id in MOVIE_IDS:
 
 df_raw = spark.createDataFrame(records)
 
-output_path = "../../data/raw/tmdb_movies_raw.csv"
+output_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw"
 (
     df_raw
     .write

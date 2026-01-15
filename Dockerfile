@@ -1,21 +1,19 @@
-FROM apache/spark:4.1.0-scala2.13-java21-python3-r-ubuntu
-USER root
-# Create directories with proper permissions upfront
+FROM apache/spark:3.5.1-scala2.12-java17-python3-ubuntu
 
-RUN 
-WORKDIR /streaming/app
+USER root
+
+WORKDIR /tmdbmovies/app
+
 COPY requirements.txt .
-RUN apt-get update && \
-  apt-get upgrade -y && \
-  apt-get install -y --no-install-recommends wget && \
-  wget -q https://jdbc.postgresql.org/download/postgresql-42.7.6.jar \
-  -O /streaming/spark/jars/postgresql-42.7.6.jar && \
-  pip3 install --no-cache-dir -r requirements.txt && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
-COPY . /streaming/app
-# Set ownership
-RUN chown -R spark:spark /streaming
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+COPY . /tmdbmovies/app
+
+RUN chown -R spark:spark /tmdbmovies
+
 USER spark
-EXPOSE 8080
-CMD ["/bin/bash"]
+
+EXPOSE 4040
+
+CMD ["tail", "-f", "/dev/null"]

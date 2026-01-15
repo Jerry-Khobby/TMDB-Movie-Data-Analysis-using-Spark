@@ -1,0 +1,2 @@
+docker exec -it tmdb_movies_spark \
+spark-submit etl/extract_tmdb.py

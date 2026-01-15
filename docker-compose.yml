@@ -1,74 +1,20 @@
 services:
-  # PostgreSQL Database
-  db:
-    image: postgres:18.1-alpine
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-postgresdb}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - streaming_network
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgresdb}",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
-    restart: unless-stopped
-
-  # Spark Streaming Application
   spark_app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: streaming_app
-    environment:
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-postgresdb}
-    depends_on:
-      db:
-        condition: service_healthy
+    container_name: tmdb_movies_spark
     ports:
       - "4040:4040"
     volumes:
-      - .:/streaming/app
-      #- ./input_data:/streaming/app/input_data
+      - ./data:/tmdbmovies/app/data
+      - ./etl:/tmdbmovies/app/etl
+      - ./logs:/tmdbmovies/app/logs
+    env_file:
+      - .env
     networks:
       - streaming_network
-    #command: ["python3", "spark_streaming_to_postgres.py"]
     restart: unless-stopped
-
-  events_app:
-    image: python:3.14-slim
-    container_name: events_app
-    environment:
-      POSTGRES_HOST: db
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-postgresdb}
-    depends_on:
-      - spark_app
-    volumes:
-      - ./scripts:/app/scripts
-      #- ./input_data:/app/input_data
-    networks:
-      - streaming_network
-    #command: ["python3", "/app/scripts/data_generator.py"]
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
 
 networks:
   streaming_network:
