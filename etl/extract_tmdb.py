@@ -8,6 +8,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from datetime import datetime
 from pyspark.sql import SparkSession 
+from pyspark.sql.functions import col, to_json
+from pyspark.sql.types import MapType, ArrayType, StructType
 
 load_dotenv()
 
@@ -88,20 +90,7 @@ def fetch_movie_with_credits(movie_id: int) -> dict | None:
     if not movie_data or "id" not in movie_data:
         logging.warning("Invalid movie payload | movie_id=%s", movie_id)
         return None
-
-    # Extract cast names (first 5) and director
-    credits = movie_data.get("credits", {})
-    cast = [member.get("name") for member in credits.get("cast", [])[:5]]
-    director = None
-    for member in credits.get("crew", []):
-        if member.get("job") == "Director":
-            director = member.get("name")
-            break
-    movie_data["cast"] = cast
-    movie_data["director"] = director
-
-    # Remove raw credits to reduce redundancy
-    movie_data.pop("credits", None)
+    
 
     return movie_data
 
@@ -119,9 +108,14 @@ for movie_id in MOVIE_IDS:
 
 df_raw = spark.createDataFrame(records)
 
-output_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw"
+for field in df_raw.schema.fields:
+    if isinstance(field.dataType, (MapType, ArrayType, StructType)):
+        df_raw = df_raw.withColumn(field.name, to_json(col(field.name)))
+
+output_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw.csv"
 (
     df_raw
+    .coalesce(1)
     .write
     .mode("overwrite")
     .option("header", "true")
