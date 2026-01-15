@@ -2,24 +2,30 @@ import os
 import time
 import logging
 import requests
-import pandas as pd
 from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from datetime import datetime
-from pyspark.sql import SparkSession 
+from pyspark.sql import SparkSession
+import shutil
+import glob
 
+# Import your schema
+from data_schema import API_MOVIES_SCHEMA
+
+# Load environment variables
 load_dotenv()
-
 API_KEY = os.getenv("API_KEY")
 BASE_URL = os.getenv("BASE_URL")  
 
+# Movie IDs to fetch
 MOVIE_IDS = [
     0, 299534, 19995, 140607, 299536, 597, 135397,
     420818, 24428, 168259, 99861, 284054, 12445,
     181808, 330457, 351286, 109445, 321612, 260513
 ]
 
+# Constants
 TIMEOUT = 10
 RETRY_TOTAL = 3
 RETRY_BACKOFF = 1.5
@@ -40,11 +46,10 @@ logging.basicConfig(
     ]
 )
 
+# Start Spark session
+spark = SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate()
 
-
-spark=(
-    SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate()
-)
+# Create a requests session with retries
 def create_session() -> requests.Session:
     retry_strategy = Retry(
         total=RETRY_TOTAL,
@@ -61,6 +66,7 @@ def create_session() -> requests.Session:
 
 session = create_session()
 
+# Simple GET request handler
 def get_json(url: str) -> dict | None:
     try:
         response = session.get(url, timeout=TIMEOUT)
@@ -76,50 +82,50 @@ def get_json(url: str) -> dict | None:
         logging.error("HTTP request failed | url=%s | error=%s", url, exc)
         return None
 
+# Fetch movie with credits
 def fetch_movie_with_credits(movie_id: int) -> dict | None:
-    """
-    Fetch movie details and embed credits directly into the movie payload.
-    """
     if movie_id == 0:
         return None
     url = f"{BASE_URL}{movie_id}?api_key={API_KEY}&append_to_response=credits"
     movie_data = get_json(url)
-
     if not movie_data or "id" not in movie_data:
         logging.warning("Invalid movie payload | movie_id=%s", movie_id)
         return None
-
-    # Extract cast names (first 5) and director
-    credits = movie_data.get("credits", {})
-    
-
     return movie_data
 
-
+# Extract all movie data
 records = []
-
 for movie_id in MOVIE_IDS:
     logging.info("Extracting movie_id=%s", movie_id)
     movie_payload = fetch_movie_with_credits(movie_id)
     if not movie_payload:
         continue
-
     records.append(movie_payload)
     time.sleep(RATE_LIMIT_SLEEP)
 
-df_raw = spark.createDataFrame(records)
+# Create Spark DataFrame using your schema
+df_raw = spark.createDataFrame(records, schema=API_MOVIES_SCHEMA)
 
-output_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw"
-(
-    df_raw
-    .write
-    .mode("overwrite")
-    .option("header", "true")
-    .csv(output_path)
-)
+# Temporary path to write Spark JSON
+temp_path = "/tmdbmovies/app/data/raw/tmp_tmdb_json"
+
+# Write DataFrame to temporary folder
+df_raw.coalesce(1).write.mode("overwrite").json(temp_path)
+
+# Locate the actual JSON part file
+part_file = glob.glob(os.path.join(temp_path, "part-*.json"))[0]
+
+# Final JSON file path
+final_json_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw.json"
+
+# Move and rename the part file
+shutil.move(part_file, final_json_path)
+
+# Remove temporary folder
+shutil.rmtree(temp_path)
 
 logging.info(
     "Raw extraction completed | records=%s | path=%s",
     df_raw.count(),
-    output_path
+    final_json_path
 )

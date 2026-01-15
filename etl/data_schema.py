@@ -1,3 +1,15 @@
+from pyspark.sql.types import (
+    StructType,
+    StructField,
+    StringType,
+    IntegerType,
+    LongType,
+    DoubleType,
+    BooleanType,
+    ArrayType,
+)
+
+
 API_MOVIES_SCHEMA = StructType(
     [
         StructField("adult", BooleanType(), True),
