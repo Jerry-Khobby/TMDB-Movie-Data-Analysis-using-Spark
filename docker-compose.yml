@@ -11,6 +11,8 @@ services:
       - ./etl:/tmdbmovies/app/etl
       - ./logs:/tmdbmovies/app/logs
       - ./kpis:/tmdbmovies/app/kpis
+      - ./main.py:/tmdbmovies/app/main.py 
+      - ./visualisation.py:/tmdbmovies/app/visualisation.py 
     env_file:
       - .env
     networks:

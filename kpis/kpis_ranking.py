@@ -127,10 +127,10 @@ spark = SparkSession.builder .appName("TMDB_KPI_Test").getOrCreate()
 csv_path = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
 
 df = spark.read.csv(csv_path, header=True, inferSchema=True)
-df.show(5)  # Quick check
+df.show(5)  
 df.printSchema()
     
-kpi_results = compute_tmdb_kpis(df, top_n=5)  # Use 5 to make it easier to inspect
+kpi_results = compute_tmdb_kpis(df, top_n=5) 
 
     # Verify results: show top 3 rows for each KPI
 for kpi_name, kpi_df in kpi_results.items():
