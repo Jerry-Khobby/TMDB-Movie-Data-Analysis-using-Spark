@@ -10,6 +10,7 @@ services:
       - ./data:/tmdbmovies/app/data
       - ./etl:/tmdbmovies/app/etl
       - ./logs:/tmdbmovies/app/logs
+      - ./kpis:/tmdbmovies/app/kpis
     env_file:
       - .env
     networks:
