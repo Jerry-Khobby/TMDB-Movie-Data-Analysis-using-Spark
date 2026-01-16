@@ -11,7 +11,7 @@ import shutil
 import glob
 
 # Import your schema
-from data_schema import API_MOVIES_SCHEMA
+from etl.data_schema import API_MOVIES_SCHEMA
 
 # Load environment variables
 load_dotenv()
@@ -47,7 +47,7 @@ logging.basicConfig(
 )
 
 # Start Spark session
-spark = SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate()
+""" spark = SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate() """
 
 # Create a requests session with retries
 def create_session() -> requests.Session:
@@ -93,39 +93,30 @@ def fetch_movie_with_credits(movie_id: int) -> dict | None:
         return None
     return movie_data
 
-# Extract all movie data
-records = []
-for movie_id in MOVIE_IDS:
-    logging.info("Extracting movie_id=%s", movie_id)
-    movie_payload = fetch_movie_with_credits(movie_id)
-    if not movie_payload:
-        continue
-    records.append(movie_payload)
-    time.sleep(RATE_LIMIT_SLEEP)
+# etl/extract_tmdb.py
 
-# Create Spark DataFrame using your schema
-df_raw = spark.createDataFrame(records, schema=API_MOVIES_SCHEMA)
+def extract_tmdb_movies(
+    spark: SparkSession,
+    output_path: str = "/tmdbmovies/app/data/raw/tmdb_movies_raw.json"
+) -> str:
+    records = []
 
-# Temporary path to write Spark JSON
-temp_path = "/tmdbmovies/app/data/raw/tmp_tmdb_json"
+    for movie_id in MOVIE_IDS:
+        logging.info("Extracting movie_id=%s", movie_id)
+        movie_payload = fetch_movie_with_credits(movie_id)
+        if movie_payload:
+            records.append(movie_payload)
+        time.sleep(RATE_LIMIT_SLEEP)
 
-# Write DataFrame to temporary folder
-df_raw.coalesce(1).write.mode("overwrite").json(temp_path)
+    df_raw = spark.createDataFrame(records, schema=API_MOVIES_SCHEMA)
 
-# Locate the actual JSON part file
-part_file = glob.glob(os.path.join(temp_path, "part-*.json"))[0]
+    temp_path = output_path + "_tmp"
+    df_raw.coalesce(1).write.mode("overwrite").json(temp_path)
 
-# Final JSON file path
-final_json_path = "/tmdbmovies/app/data/raw/tmdb_movies_raw.json"
+    part_file = glob.glob(os.path.join(temp_path, "part-*.json"))[0]
+    shutil.move(part_file, output_path)
+    shutil.rmtree(temp_path)
 
-# Move and rename the part file
-shutil.move(part_file, final_json_path)
+    logging.info("Extraction completed | records=%s", df_raw.count())
+    return output_path
 
-# Remove temporary folder
-shutil.rmtree(temp_path)
-
-logging.info(
-    "Raw extraction completed | records=%s | path=%s",
-    df_raw.count(),
-    final_json_path
-)

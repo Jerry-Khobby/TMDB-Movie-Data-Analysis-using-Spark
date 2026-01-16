@@ -10,14 +10,11 @@ from pyspark.sql.window import Window
 
 def advanced_tmdb_kpis(df: DataFrame, top_n: int = 10, log_dir: str = "/tmdbmovies/app/logs") -> Dict[str, DataFrame]:
     # setup logging
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"tmdb_advanced_kpis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-        handlers=[logging.FileHandler(log_file), logging.StreamHandler()]
-    )
     logger = logging.getLogger(__name__)
+    log_file = os.path.join(log_dir, f"tmdb_advanced_kpis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logger.addHandler(handler)
     logger.info("Advanced TMDB KPI computation started")
     logger.info(f"Top-N threshold: {top_n}, Input rows: {df.count()}")
 
@@ -136,11 +133,11 @@ def advanced_tmdb_kpis(df: DataFrame, top_n: int = 10, log_dir: str = "/tmdbmovi
 
 
 
-from pyspark.sql import SparkSession
+""" from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.appName("TMDB_advanced_analysis").getOrCreate()
 df_tmdb = spark.read.option("header", True).option("inferSchema", True).csv("/tmdbmovies/app/data/clean/tmdb_movies_clean.csv")
 
 results= advanced_tmdb_kpis(df_tmdb,top_n=10)
 print("Top 5 Highest Revenue Movies:")
-results["highest_revenue"].show(truncate=False)
+results["highest_revenue"].show(truncate=False) """

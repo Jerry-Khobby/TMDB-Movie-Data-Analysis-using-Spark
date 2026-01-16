@@ -14,13 +14,11 @@ def visualize_tmdb_from_url(df_url, output_dir="/tmdbmovies/app/data/diagrams", 
     os.makedirs(log_dir, exist_ok=True)
     
     # setup logging
-    log_file = os.path.join(log_dir, f"tmdb_visualization_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-        handlers=[logging.FileHandler(log_file), logging.StreamHandler()]
-    )
     logger = logging.getLogger(__name__)
+    log_file = os.path.join(log_dir, f"visualization_{datetime.now():%Y%m%d_%H%M%S}.log")
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logger.addHandler(handler)
     
     logger.info("Starting TMDB visualizations")
     
@@ -102,6 +100,6 @@ def visualize_tmdb_from_url(df_url, output_dir="/tmdbmovies/app/data/diagrams", 
     
     
 
-csv_url = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
-visualize_tmdb_from_url(csv_url)
+""" csv_url = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
+visualize_tmdb_from_url(csv_url) """
 

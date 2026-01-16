@@ -1,0 +1,25 @@
+2026-01-16 16:10:11,709 | INFO | Starting TMDB data cleaning pipeline
+2026-01-16 16:10:11,710 | INFO | Dropping irrelevant columns
+2026-01-16 16:10:11,769 | INFO | Extracting belongs_to_collection name
+2026-01-16 16:10:11,944 | INFO | Flattening genres
+2026-01-16 16:10:12,222 | INFO | Flattening spoken_languages
+2026-01-16 16:10:12,288 | INFO | Flattening production_countries
+2026-01-16 16:10:12,376 | INFO | Flattening production_companies
+2026-01-16 16:10:12,509 | INFO | Casting numeric columns
+2026-01-16 16:10:13,312 | INFO | Converting release_date to date
+2026-01-16 16:10:13,387 | INFO | Replacing zero values with null
+2026-01-16 16:10:13,687 | INFO | Converting budget and revenue to million USD
+2026-01-16 16:10:13,788 | INFO | Handling vote_count = 0
+2026-01-16 16:10:13,845 | INFO | Replacing placeholder text with null
+2026-01-16 16:10:14,106 | INFO | Dropping duplicate movies
+2026-01-16 16:10:14,141 | INFO | Dropping rows with missing id or title
+2026-01-16 16:10:14,182 | INFO | Filtering rows with insufficient data
+2026-01-16 16:10:14,299 | INFO | Filtering released movies
+2026-01-16 16:10:14,429 | INFO | Extracting cast information
+2026-01-16 16:10:14,681 | INFO | Extracting director
+2026-01-16 16:10:15,019 | INFO | Reordering final columns
+2026-01-16 16:10:15,299 | INFO | Resetting row index
+2026-01-16 16:10:15,643 | INFO | Validation summary
+2026-01-16 16:10:20,965 | INFO | Final row count: 18
+2026-01-16 16:10:20,996 | INFO | Final column count: 22
+2026-01-16 16:10:21,017 | INFO | TMDB data cleaning pipeline completed successfully

@@ -15,19 +15,12 @@ log_file = os.path.join(
   LOG_DIR, f"tmdb_transform_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 )
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
-    handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
-)
+
 
 
 
 logging.info(f"Logging initialized. Log file: {log_file}")
-spark = SparkSession.builder.appName("TMDB_Raw_Transform").getOrCreate()
+""" spark = SparkSession.builder.appName("TMDB_Raw_Transform").getOrCreate() """
 
 
 
@@ -242,12 +235,18 @@ def save_clean_data_csv(df, output_path: str):
     
 
 
-# 1. Read raw JSON
-df_raw = spark.read.json("/tmdbmovies/app/data/raw/tmdb_movies_raw.json")
+def run_transformation(
+    spark: SparkSession,
+    raw_path: str,
+    output_csv: str
+) -> str:
+    logger = logging.getLogger(__name__)
+    log_file = f"/tmdbmovies/app/logs/transform_{datetime.now():%Y%m%d_%H%M%S}.log"
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logger.addHandler(handler)
+    df_raw = spark.read.json(raw_path)
+    df_clean = clean_data(df_raw)
+    save_clean_data_csv(df_clean, output_csv)
+    return output_csv
 
-# 2. Clean
-df_clean = clean_data(df_raw)
-
-# 3. Save to a single CSV
-output_csv = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
-save_clean_data_csv(df_clean, output_csv)

@@ -39,19 +39,13 @@ def compute_tmdb_kpis(
     """
 
     # Setup logging
-    os.makedirs(log_dir, exist_ok=True)
+    logger = logging.getLogger(__name__)
     log_file = os.path.join(
         log_dir, f"tmdb_kpis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
     )
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-        handlers=[
-            logging.FileHandler(log_file),
-            logging.StreamHandler()
-        ]
-    )
-    logger = logging.getLogger(__name__)
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logger.addHandler(handler)
     logger.info("TMDB KPI computation started")
     logger.info(f"Top-N threshold set to {top_n}")
     logger.info(f"Input row count: {df.count()}")
@@ -118,6 +112,7 @@ def compute_tmdb_kpis(
     return results
 
 
+""" 
 spark = SparkSession.builder .appName("TMDB_KPI_Test").getOrCreate()
 
 
@@ -135,4 +130,8 @@ kpi_results = compute_tmdb_kpis(df, top_n=5)
     # Verify results: show top 3 rows for each KPI
 for kpi_name, kpi_df in kpi_results.items():
     print(f"\n=== {kpi_name.upper()} ===")
-    kpi_df.show(3, truncate=False)
+    kpi_df.show(3, truncate=False) 
+    
+    
+    
+"""

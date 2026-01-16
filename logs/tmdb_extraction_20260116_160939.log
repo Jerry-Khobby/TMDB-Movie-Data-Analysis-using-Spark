@@ -1,0 +1,165 @@
+2026-01-16 16:09:39,865 | INFO | Logging initialized. Log file: /tmdbmovies/app/logs/tmdb_transform_20260116_160939.log
+2026-01-16 16:09:40,365 | WARNING | Matplotlib created a temporary cache directory at /tmp/matplotlib-7o903jxo because the default path (/home/spark/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+2026-01-16 16:09:40,701 | INFO | generated new fontManager
+2026-01-16 16:09:41,134 | INFO | Logging initialized | log_file=/tmdbmovies/app/logs/tmdb_main_20260116_160941.log
+2026-01-16 16:09:41,136 | INFO | Starting TMDB Spark Pipeline
+2026-01-16 16:09:43,992 | INFO | Extraction step started
+2026-01-16 16:09:43,993 | INFO | Extracting movie_id=0
+2026-01-16 16:09:44,244 | INFO | Extracting movie_id=299534
+2026-01-16 16:09:45,391 | INFO | Extracting movie_id=19995
+2026-01-16 16:09:45,857 | INFO | Extracting movie_id=140607
+2026-01-16 16:09:46,278 | INFO | Extracting movie_id=299536
+2026-01-16 16:09:46,868 | INFO | Extracting movie_id=597
+2026-01-16 16:09:47,280 | INFO | Extracting movie_id=135397
+2026-01-16 16:09:47,689 | INFO | Extracting movie_id=420818
+2026-01-16 16:09:48,096 | INFO | Extracting movie_id=24428
+2026-01-16 16:09:48,544 | INFO | Extracting movie_id=168259
+2026-01-16 16:09:48,945 | INFO | Extracting movie_id=99861
+2026-01-16 16:09:49,374 | INFO | Extracting movie_id=284054
+2026-01-16 16:09:49,806 | INFO | Extracting movie_id=12445
+2026-01-16 16:09:50,209 | INFO | Extracting movie_id=181808
+2026-01-16 16:09:50,619 | INFO | Extracting movie_id=330457
+2026-01-16 16:09:51,007 | INFO | Extracting movie_id=351286
+2026-01-16 16:09:51,418 | INFO | Extracting movie_id=109445
+2026-01-16 16:09:51,840 | INFO | Extracting movie_id=321612
+2026-01-16 16:09:52,244 | INFO | Extracting movie_id=260513
+2026-01-16 16:10:06,839 | INFO | Extraction completed | records=18
+2026-01-16 16:10:06,905 | INFO | Transformation step started
+2026-01-16 16:10:11,709 | INFO | Starting TMDB data cleaning pipeline
+2026-01-16 16:10:11,710 | INFO | Dropping irrelevant columns
+2026-01-16 16:10:11,769 | INFO | Extracting belongs_to_collection name
+2026-01-16 16:10:11,944 | INFO | Flattening genres
+2026-01-16 16:10:12,222 | INFO | Flattening spoken_languages
+2026-01-16 16:10:12,288 | INFO | Flattening production_countries
+2026-01-16 16:10:12,376 | INFO | Flattening production_companies
+2026-01-16 16:10:12,509 | INFO | Casting numeric columns
+2026-01-16 16:10:13,312 | INFO | Converting release_date to date
+2026-01-16 16:10:13,387 | INFO | Replacing zero values with null
+2026-01-16 16:10:13,687 | INFO | Converting budget and revenue to million USD
+2026-01-16 16:10:13,788 | INFO | Handling vote_count = 0
+2026-01-16 16:10:13,845 | INFO | Replacing placeholder text with null
+2026-01-16 16:10:14,106 | INFO | Dropping duplicate movies
+2026-01-16 16:10:14,141 | INFO | Dropping rows with missing id or title
+2026-01-16 16:10:14,182 | INFO | Filtering rows with insufficient data
+2026-01-16 16:10:14,299 | INFO | Filtering released movies
+2026-01-16 16:10:14,429 | INFO | Extracting cast information
+2026-01-16 16:10:14,681 | INFO | Extracting director
+2026-01-16 16:10:15,019 | INFO | Reordering final columns
+2026-01-16 16:10:15,299 | INFO | Resetting row index
+2026-01-16 16:10:15,643 | INFO | Validation summary
+2026-01-16 16:10:20,965 | INFO | Final row count: 18
+2026-01-16 16:10:20,996 | INFO | Final column count: 22
+2026-01-16 16:10:21,017 | INFO | TMDB data cleaning pipeline completed successfully
+2026-01-16 16:10:21,019 | INFO | Saving cleaned DataFrame to CSV at /tmdbmovies/app/data/clean/tmdb_movies_clean.csv
+2026-01-16 16:10:24,704 | INFO | CSV saved successfully as /tmdbmovies/app/data/clean/tmdb_movies_clean.csv
+2026-01-16 16:10:24,723 | INFO | KPI computation started
+2026-01-16 16:10:26,110 | INFO | TMDB KPI computation started
+2026-01-16 16:10:26,111 | INFO | Top-N threshold set to 10
+2026-01-16 16:10:26,759 | INFO | Input row count: 18
+2026-01-16 16:10:26,781 | INFO | Input schema validation passed
+2026-01-16 16:10:26,790 | INFO | Computing profit and ROI
+2026-01-16 16:10:26,911 | INFO | Computing KPI: highest_revenue
+2026-01-16 16:10:27,872 | INFO | highest_revenue | rank=1, title=Avatar, revenue_musd=2923.706026
+2026-01-16 16:10:27,874 | INFO | highest_revenue | rank=2, title=Avengers: Endgame, revenue_musd=2799.4391
+2026-01-16 16:10:27,880 | INFO | highest_revenue | rank=3, title=Titanic, revenue_musd=2264.162353
+2026-01-16 16:10:27,881 | INFO | Computing KPI: highest_budget
+2026-01-16 16:10:28,240 | INFO | highest_budget | rank=1, title=Avengers: Endgame, budget_musd=356.0
+2026-01-16 16:10:28,254 | INFO | highest_budget | rank=2, title=Star Wars: The Last Jedi, budget_musd=300.0
+2026-01-16 16:10:28,255 | INFO | highest_budget | rank=3, title=Avengers: Infinity War, budget_musd=300.0
+2026-01-16 16:10:28,256 | INFO | Computing KPI: highest_profit
+2026-01-16 16:10:28,661 | INFO | highest_profit | rank=1, title=Avatar, profit=2686.706026
+2026-01-16 16:10:28,663 | INFO | highest_profit | rank=2, title=Avengers: Endgame, profit=2443.4391
+2026-01-16 16:10:28,665 | INFO | highest_profit | rank=3, title=Titanic, profit=2064.162353
+2026-01-16 16:10:28,666 | INFO | Computing KPI: lowest_profit
+2026-01-16 16:10:29,167 | INFO | lowest_profit | rank=1, title=Star Wars: The Last Jedi, profit=1032.69883
+2026-01-16 16:10:29,168 | INFO | lowest_profit | rank=2, title=Incredibles 2, profit=1043.225667
+2026-01-16 16:10:29,172 | INFO | lowest_profit | rank=3, title=Beauty and the Beast, profit=1106.115964
+2026-01-16 16:10:29,175 | INFO | Computing KPI: highest_roi
+2026-01-16 16:10:29,806 | INFO | highest_roi | rank=1, title=Avatar, roi=12.33631234599156
+2026-01-16 16:10:29,809 | INFO | highest_roi | rank=2, title=Titanic, roi=11.320811765
+2026-01-16 16:10:29,811 | INFO | highest_roi | rank=3, title=Jurassic World, roi=11.14358296
+2026-01-16 16:10:29,813 | INFO | Computing KPI: lowest_roi
+2026-01-16 16:10:30,374 | INFO | lowest_roi | rank=1, title=Star Wars: The Last Jedi, roi=4.442329433333334
+2026-01-16 16:10:30,375 | INFO | lowest_roi | rank=2, title=Avengers: Age of Ultron, roi=5.98044125106383
+2026-01-16 16:10:30,376 | INFO | lowest_roi | rank=3, title=Incredibles 2, roi=6.216128335
+2026-01-16 16:10:30,378 | INFO | Computing KPI: most_voted
+2026-01-16 16:10:30,799 | INFO | most_voted | rank=1, title=The Avengers, vote_count=35098
+2026-01-16 16:10:30,809 | INFO | most_voted | rank=2, title=Avatar, vote_count=33252
+2026-01-16 16:10:30,811 | INFO | most_voted | rank=3, title=Avengers: Infinity War, vote_count=31339
+2026-01-16 16:10:30,813 | INFO | Computing KPI: highest_rated
+2026-01-16 16:10:31,259 | INFO | highest_rated | rank=1, title=Avengers: Endgame, vote_average=8.237, vote_count=27130
+2026-01-16 16:10:31,269 | INFO | highest_rated | rank=2, title=Avengers: Infinity War, vote_average=8.235, vote_count=31339
+2026-01-16 16:10:31,279 | INFO | highest_rated | rank=3, title=Harry Potter and the Deathly Hallows: Part 2, vote_average=8.082, vote_count=21574
+2026-01-16 16:10:31,299 | INFO | Computing KPI: lowest_rated
+2026-01-16 16:10:31,705 | INFO | lowest_rated | rank=1, title=Jurassic World: Fallen Kingdom, vote_average=6.535, vote_count=12484
+2026-01-16 16:10:31,712 | INFO | lowest_rated | rank=2, title=Jurassic World, vote_average=6.7, vote_count=21219
+2026-01-16 16:10:31,727 | INFO | lowest_rated | rank=3, title=Star Wars: The Last Jedi, vote_average=6.762, vote_count=16018
+2026-01-16 16:10:31,729 | INFO | Computing KPI: most_popular
+2026-01-16 16:10:32,236 | INFO | most_popular | rank=1, title=The Avengers, popularity=65.2961
+2026-01-16 16:10:32,237 | INFO | most_popular | rank=2, title=Avatar, popularity=62.8235
+2026-01-16 16:10:32,241 | INFO | most_popular | rank=3, title=Titanic, popularity=29.4892
+2026-01-16 16:10:32,244 | INFO | TMDB KPI computation completed successfully
+2026-01-16 16:10:32,250 | INFO | Total KPI outputs generated: 10
+2026-01-16 16:10:32,259 | INFO | Advanced TMDB KPI computation started
+2026-01-16 16:10:32,695 | INFO | Top-N threshold: 10, Input rows: 18
+2026-01-16 16:10:32,764 | INFO | Casting numeric columns to correct types for calculations
+2026-01-16 16:10:32,929 | INFO | Casting complete
+2026-01-16 16:10:32,931 | INFO | Calculating profit and ROI
+2026-01-16 16:10:33,486 | INFO | highest_revenue | rank=1, title=Avatar, revenue_musd=2923.706026
+2026-01-16 16:10:33,508 | INFO | highest_revenue | rank=2, title=Avengers: Endgame, revenue_musd=2799.4391
+2026-01-16 16:10:33,531 | INFO | highest_revenue | rank=3, title=Titanic, revenue_musd=2264.162353
+2026-01-16 16:10:33,876 | INFO | highest_budget | rank=1, title=Avengers: Endgame, budget_musd=356.0
+2026-01-16 16:10:33,878 | INFO | highest_budget | rank=2, title=Star Wars: The Last Jedi, budget_musd=300.0
+2026-01-16 16:10:33,878 | INFO | highest_budget | rank=3, title=Avengers: Infinity War, budget_musd=300.0
+2026-01-16 16:10:34,166 | INFO | highest_profit | rank=1, title=Avatar, profit=2686.706026
+2026-01-16 16:10:34,167 | INFO | highest_profit | rank=2, title=Avengers: Endgame, profit=2443.4391
+2026-01-16 16:10:34,168 | INFO | highest_profit | rank=3, title=Titanic, profit=2064.162353
+2026-01-16 16:10:34,702 | INFO | lowest_profit | rank=1, title=Star Wars: The Last Jedi, profit=1032.69883
+2026-01-16 16:10:34,704 | INFO | lowest_profit | rank=2, title=Incredibles 2, profit=1043.225667
+2026-01-16 16:10:34,706 | INFO | lowest_profit | rank=3, title=Beauty and the Beast, profit=1106.115964
+2026-01-16 16:10:35,133 | INFO | highest_roi | rank=1, title=Avatar, roi=12.33631234599156
+2026-01-16 16:10:35,135 | INFO | highest_roi | rank=2, title=Titanic, roi=11.320811765
+2026-01-16 16:10:35,137 | INFO | highest_roi | rank=3, title=Jurassic World, roi=11.14358296
+2026-01-16 16:10:35,467 | INFO | lowest_roi | rank=1, title=Star Wars: The Last Jedi, roi=4.442329433333334
+2026-01-16 16:10:35,470 | INFO | lowest_roi | rank=2, title=Avengers: Age of Ultron, roi=5.98044125106383
+2026-01-16 16:10:35,473 | INFO | lowest_roi | rank=3, title=Incredibles 2, roi=6.216128335
+2026-01-16 16:10:35,793 | INFO | most_voted | rank=1, title=The Avengers, vote_count=35098
+2026-01-16 16:10:35,796 | INFO | most_voted | rank=2, title=Avatar, vote_count=33252
+2026-01-16 16:10:35,801 | INFO | most_voted | rank=3, title=Avengers: Infinity War, vote_count=31339
+2026-01-16 16:10:36,248 | INFO | highest_rated | rank=1, title=Avengers: Endgame, vote_average=8.237
+2026-01-16 16:10:36,256 | INFO | highest_rated | rank=2, title=Avengers: Infinity War, vote_average=8.235
+2026-01-16 16:10:36,258 | INFO | highest_rated | rank=3, title=Harry Potter and the Deathly Hallows: Part 2, vote_average=8.082
+2026-01-16 16:10:36,795 | INFO | lowest_rated | rank=1, title=Jurassic World: Fallen Kingdom, vote_average=6.535
+2026-01-16 16:10:36,800 | INFO | lowest_rated | rank=2, title=Jurassic World, vote_average=6.7
+2026-01-16 16:10:36,809 | INFO | lowest_rated | rank=3, title=Star Wars: The Last Jedi, vote_average=6.762
+2026-01-16 16:10:37,185 | INFO | most_popular | rank=1, title=The Avengers, popularity=65.2961
+2026-01-16 16:10:37,186 | INFO | most_popular | rank=2, title=Avatar, popularity=62.8235
+2026-01-16 16:10:37,190 | INFO | most_popular | rank=3, title=Titanic, popularity=29.4892
+2026-01-16 16:10:37,193 | INFO | Running advanced search: Bruce Willis in Sci-Fi/Action movies
+2026-01-16 16:10:38,178 | INFO | Running advanced search: Uma Thurman + Quentin Tarantino
+2026-01-16 16:10:38,578 | INFO | Analyzing franchise vs standalone movies
+2026-01-16 16:10:39,399 | INFO | Franchise vs Standalone | is_franchise=True, mean_revenue=1682.6684113749998, median_roi=7.708641394117647
+2026-01-16 16:10:39,400 | INFO | Franchise vs Standalone | is_franchise=False, mean_revenue=1765.1391585000001, median_roi=7.913224775000001
+2026-01-16 16:10:39,402 | INFO | Computing most successful franchises
+2026-01-16 16:10:40,448 | INFO | Most Successful Franchises | belongs_to_collection=The Avengers Collection, total_revenue=7776.073348, mean_rating=7.91225
+2026-01-16 16:10:40,456 | INFO | Most Successful Franchises | belongs_to_collection=Star Wars Collection, total_revenue=3400.9224540000005, mean_rating=7.007999999999999
+2026-01-16 16:10:40,457 | INFO | Most Successful Franchises | belongs_to_collection=Jurassic Park Collection, total_revenue=2982.0064810000003, mean_rating=6.6175
+2026-01-16 16:10:40,459 | INFO | Computing most successful directors
+2026-01-16 16:10:41,374 | INFO | Most Successful Directors | director=James Cameron, total_revenue=5187.868379, mean_rating=7.7515
+2026-01-16 16:10:41,395 | INFO | Most Successful Directors | director=Joss Whedon, total_revenue=2924.219209, mean_rating=7.5885
+2026-01-16 16:10:41,397 | INFO | Most Successful Directors | director=Anthony Russo, total_revenue=2799.4391, mean_rating=8.237
+2026-01-16 16:10:41,398 | INFO | Advanced TMDB KPI computation completed
+2026-01-16 16:10:41,413 | INFO | Computed 10 basic KPIs
+2026-01-16 16:10:41,425 | INFO | Computed 15 advanced KPIs
+2026-01-16 16:10:41,427 | INFO | Visualization started
+2026-01-16 16:10:41,446 | INFO | Starting TMDB visualizations
+2026-01-16 16:10:41,464 | INFO | Loaded DataFrame from /tmdbmovies/app/data/clean/tmdb_movies_clean.csv with 18 rows
+2026-01-16 16:10:42,235 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/revenue_vs_budget.png
+2026-01-16 16:10:42,762 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/roi_by_genre.png
+2026-01-16 16:10:43,158 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/top10_popular_movies.png
+2026-01-16 16:10:43,560 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/yearly_box_office.png
+2026-01-16 16:10:43,797 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/franchise_vs_standalone.png
+2026-01-16 16:10:43,798 | INFO | All TMDB visualizations completed
+2026-01-16 16:10:43,799 | INFO | TMDB Pipeline completed successfully
+2026-01-16 16:10:44,302 | INFO | Spark session stopped
+2026-01-16 16:10:44,312 | INFO | Closing down clientserver connection
