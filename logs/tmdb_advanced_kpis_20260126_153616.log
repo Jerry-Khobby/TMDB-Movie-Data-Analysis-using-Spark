@@ -1,0 +1,49 @@
+2026-01-26 15:36:16,199 | INFO | Advanced TMDB KPI computation started
+2026-01-26 15:36:16,778 | INFO | Top-N threshold: 10, Input rows: 18
+2026-01-26 15:36:16,815 | INFO | Casting numeric columns to correct types for calculations
+2026-01-26 15:36:17,075 | INFO | Casting complete
+2026-01-26 15:36:17,112 | INFO | Calculating profit and ROI
+2026-01-26 15:36:18,494 | INFO | highest_revenue | rank=1, title=Avatar, revenue_musd=2923.706026
+2026-01-26 15:36:18,501 | INFO | highest_revenue | rank=2, title=Avengers: Endgame, revenue_musd=2799.4391
+2026-01-26 15:36:18,509 | INFO | highest_revenue | rank=3, title=Titanic, revenue_musd=2264.162353
+2026-01-26 15:36:19,346 | INFO | highest_budget | rank=1, title=Avengers: Endgame, budget_musd=356.0
+2026-01-26 15:36:19,399 | INFO | highest_budget | rank=2, title=Avengers: Infinity War, budget_musd=300.0
+2026-01-26 15:36:19,439 | INFO | highest_budget | rank=3, title=Star Wars: The Last Jedi, budget_musd=300.0
+2026-01-26 15:36:20,556 | INFO | highest_profit | rank=1, title=Avatar, profit=2686.706026
+2026-01-26 15:36:20,577 | INFO | highest_profit | rank=2, title=Avengers: Endgame, profit=2443.4391
+2026-01-26 15:36:20,580 | INFO | highest_profit | rank=3, title=Titanic, profit=2064.162353
+2026-01-26 15:36:21,829 | INFO | lowest_profit | rank=1, title=Star Wars: The Last Jedi, profit=1032.69883
+2026-01-26 15:36:21,846 | INFO | lowest_profit | rank=2, title=Incredibles 2, profit=1043.225667
+2026-01-26 15:36:21,879 | INFO | lowest_profit | rank=3, title=Beauty and the Beast, profit=1106.115964
+2026-01-26 15:36:23,841 | INFO | highest_roi | rank=1, title=Avatar, roi=12.33631234599156
+2026-01-26 15:36:23,852 | INFO | highest_roi | rank=2, title=Titanic, roi=11.320811765
+2026-01-26 15:36:23,884 | INFO | highest_roi | rank=3, title=Jurassic World, roi=11.14358296
+2026-01-26 15:36:24,964 | INFO | lowest_roi | rank=1, title=Star Wars: The Last Jedi, roi=4.442329433333334
+2026-01-26 15:36:24,987 | INFO | lowest_roi | rank=2, title=Avengers: Age of Ultron, roi=5.98044125106383
+2026-01-26 15:36:25,004 | INFO | lowest_roi | rank=3, title=Incredibles 2, roi=6.216128335
+2026-01-26 15:36:25,860 | INFO | most_voted | rank=1, title=The Avengers, vote_count=35399
+2026-01-26 15:36:25,928 | INFO | most_voted | rank=2, title=Avatar, vote_count=33330
+2026-01-26 15:36:25,965 | INFO | most_voted | rank=3, title=Avengers: Infinity War, vote_count=31385
+2026-01-26 15:36:26,829 | INFO | highest_rated | rank=1, title=Avengers: Infinity War, vote_average=8.2
+2026-01-26 15:36:26,870 | INFO | highest_rated | rank=2, title=Avengers: Endgame, vote_average=8.2
+2026-01-26 15:36:26,944 | INFO | highest_rated | rank=3, title=Harry Potter and the Deathly Hallows: Part 2, vote_average=8.081
+2026-01-26 15:36:27,863 | INFO | lowest_rated | rank=1, title=Jurassic World: Fallen Kingdom, vote_average=6.535
+2026-01-26 15:36:27,899 | INFO | lowest_rated | rank=2, title=Jurassic World, vote_average=6.7
+2026-01-26 15:36:27,951 | INFO | lowest_rated | rank=3, title=Star Wars: The Last Jedi, vote_average=6.76
+2026-01-26 15:36:28,667 | INFO | most_popular | rank=1, title=The Avengers, popularity=82.8271
+2026-01-26 15:36:28,679 | INFO | most_popular | rank=2, title=Avatar, popularity=48.9819
+2026-01-26 15:36:28,693 | INFO | most_popular | rank=3, title=Avengers: Infinity War, popularity=31.32
+2026-01-26 15:36:28,696 | INFO | Running advanced search: Bruce Willis in Sci-Fi/Action movies
+2026-01-26 15:36:29,942 | INFO | Running advanced search: Uma Thurman + Quentin Tarantino
+2026-01-26 15:36:31,295 | INFO | Analyzing franchise vs standalone movies
+2026-01-26 15:36:33,378 | INFO | Franchise vs Standalone | is_franchise=True, mean_revenue=1682.6684113749998, median_roi=7.708641394117647
+2026-01-26 15:36:33,429 | INFO | Franchise vs Standalone | is_franchise=False, mean_revenue=1765.1391585000001, median_roi=7.913224775000001
+2026-01-26 15:36:33,460 | INFO | Computing most successful franchises
+2026-01-26 15:36:36,407 | INFO | Most Successful Franchises | belongs_to_collection=The Avengers Collection, total_revenue=7776.073348, mean_rating=7.897749999999999
+2026-01-26 15:36:36,474 | INFO | Most Successful Franchises | belongs_to_collection=Star Wars Collection, total_revenue=3400.9224540000005, mean_rating=7.0065
+2026-01-26 15:36:36,548 | INFO | Most Successful Franchises | belongs_to_collection=Jurassic Park Collection, total_revenue=2982.0064810000003, mean_rating=6.6175
+2026-01-26 15:36:36,562 | INFO | Computing most successful directors
+2026-01-26 15:36:38,319 | INFO | Most Successful Directors | director=James Cameron, total_revenue=5187.868379, mean_rating=7.7509999999999994
+2026-01-26 15:36:38,564 | INFO | Most Successful Directors | director=Anthony Russo, total_revenue=4851.854139, mean_rating=8.2
+2026-01-26 15:36:38,677 | INFO | Most Successful Directors | director=Joss Whedon, total_revenue=2924.219209, mean_rating=7.5954999999999995
+2026-01-26 15:36:38,821 | INFO | Advanced TMDB KPI computation completed

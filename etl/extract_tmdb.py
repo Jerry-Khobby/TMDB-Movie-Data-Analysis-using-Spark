@@ -47,7 +47,6 @@ logging.basicConfig(
 )
 
 # Start Spark session
-""" spark = SparkSession.builder.appName("TMDB_Raw_Extraction").getOrCreate() """
 
 # Create a requests session with retries
 def create_session() -> requests.Session:

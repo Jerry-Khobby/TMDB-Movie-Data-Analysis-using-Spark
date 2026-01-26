@@ -100,6 +100,5 @@ def visualize_tmdb_from_url(df_url, output_dir="/tmdbmovies/app/data/diagrams", 
     
     
 
-""" csv_url = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
-visualize_tmdb_from_url(csv_url) """
+
 

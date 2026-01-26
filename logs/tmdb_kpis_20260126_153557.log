@@ -1,0 +1,47 @@
+2026-01-26 15:35:57,309 | INFO | TMDB KPI computation started
+2026-01-26 15:35:57,382 | INFO | Top-N threshold set to 10
+2026-01-26 15:36:00,267 | INFO | Input row count: 18
+2026-01-26 15:36:00,378 | INFO | Input schema validation passed
+2026-01-26 15:36:00,532 | INFO | Computing profit and ROI
+2026-01-26 15:36:00,784 | INFO | Computing KPI: highest_revenue
+2026-01-26 15:36:03,393 | INFO | highest_revenue | rank=1, title=Avatar, revenue_musd=2923.706026
+2026-01-26 15:36:03,466 | INFO | highest_revenue | rank=2, title=Avengers: Endgame, revenue_musd=2799.4391
+2026-01-26 15:36:03,490 | INFO | highest_revenue | rank=3, title=Titanic, revenue_musd=2264.162353
+2026-01-26 15:36:03,511 | INFO | Computing KPI: highest_budget
+2026-01-26 15:36:04,745 | INFO | highest_budget | rank=1, title=Avengers: Endgame, budget_musd=356.0
+2026-01-26 15:36:04,861 | INFO | highest_budget | rank=2, title=Avengers: Infinity War, budget_musd=300.0
+2026-01-26 15:36:05,047 | INFO | highest_budget | rank=3, title=Star Wars: The Last Jedi, budget_musd=300.0
+2026-01-26 15:36:05,124 | INFO | Computing KPI: highest_profit
+2026-01-26 15:36:06,645 | INFO | highest_profit | rank=1, title=Avatar, profit=2686.706026
+2026-01-26 15:36:06,768 | INFO | highest_profit | rank=2, title=Avengers: Endgame, profit=2443.4391
+2026-01-26 15:36:06,799 | INFO | highest_profit | rank=3, title=Titanic, profit=2064.162353
+2026-01-26 15:36:06,815 | INFO | Computing KPI: lowest_profit
+2026-01-26 15:36:07,926 | INFO | lowest_profit | rank=1, title=Star Wars: The Last Jedi, profit=1032.69883
+2026-01-26 15:36:07,931 | INFO | lowest_profit | rank=2, title=Incredibles 2, profit=1043.225667
+2026-01-26 15:36:07,936 | INFO | lowest_profit | rank=3, title=Beauty and the Beast, profit=1106.115964
+2026-01-26 15:36:07,945 | INFO | Computing KPI: highest_roi
+2026-01-26 15:36:09,679 | INFO | highest_roi | rank=1, title=Avatar, roi=12.33631234599156
+2026-01-26 15:36:09,681 | INFO | highest_roi | rank=2, title=Titanic, roi=11.320811765
+2026-01-26 15:36:09,687 | INFO | highest_roi | rank=3, title=Jurassic World, roi=11.14358296
+2026-01-26 15:36:09,693 | INFO | Computing KPI: lowest_roi
+2026-01-26 15:36:10,878 | INFO | lowest_roi | rank=1, title=Star Wars: The Last Jedi, roi=4.442329433333334
+2026-01-26 15:36:10,942 | INFO | lowest_roi | rank=2, title=Avengers: Age of Ultron, roi=5.98044125106383
+2026-01-26 15:36:10,955 | INFO | lowest_roi | rank=3, title=Incredibles 2, roi=6.216128335
+2026-01-26 15:36:10,985 | INFO | Computing KPI: most_voted
+2026-01-26 15:36:12,159 | INFO | most_voted | rank=1, title=The Avengers, vote_count=35399
+2026-01-26 15:36:12,177 | INFO | most_voted | rank=2, title=Avatar, vote_count=33330
+2026-01-26 15:36:12,198 | INFO | most_voted | rank=3, title=Avengers: Infinity War, vote_count=31385
+2026-01-26 15:36:12,206 | INFO | Computing KPI: highest_rated
+2026-01-26 15:36:13,194 | INFO | highest_rated | rank=1, title=Avengers: Infinity War, vote_average=8.2, vote_count=31385
+2026-01-26 15:36:13,267 | INFO | highest_rated | rank=2, title=Avengers: Endgame, vote_average=8.2, vote_count=27170
+2026-01-26 15:36:13,282 | INFO | highest_rated | rank=3, title=Harry Potter and the Deathly Hallows: Part 2, vote_average=8.081, vote_count=21609
+2026-01-26 15:36:13,294 | INFO | Computing KPI: lowest_rated
+2026-01-26 15:36:14,538 | INFO | lowest_rated | rank=1, title=Jurassic World: Fallen Kingdom, vote_average=6.535, vote_count=12508
+2026-01-26 15:36:14,625 | INFO | lowest_rated | rank=2, title=Jurassic World, vote_average=6.7, vote_count=21256
+2026-01-26 15:36:14,671 | INFO | lowest_rated | rank=3, title=Star Wars: The Last Jedi, vote_average=6.76, vote_count=16045
+2026-01-26 15:36:14,822 | INFO | Computing KPI: most_popular
+2026-01-26 15:36:15,680 | INFO | most_popular | rank=1, title=The Avengers, popularity=82.8271
+2026-01-26 15:36:15,741 | INFO | most_popular | rank=2, title=Avatar, popularity=48.9819
+2026-01-26 15:36:15,805 | INFO | most_popular | rank=3, title=Avengers: Infinity War, popularity=31.32
+2026-01-26 15:36:15,952 | INFO | TMDB KPI computation completed successfully
+2026-01-26 15:36:16,147 | INFO | Total KPI outputs generated: 10

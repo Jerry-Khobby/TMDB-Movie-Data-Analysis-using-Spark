@@ -1,10 +1,8 @@
 # main.py
-
 import logging
 import os
 from datetime import datetime
 from pyspark.sql import SparkSession
-
 # ETL
 from etl.extract_tmdb import extract_tmdb_movies
 from etl.transform import run_transformation
@@ -72,8 +70,6 @@ def create_spark_session() -> SparkSession:
         .appName("TMDB_End_to_End_Pipeline")
         .getOrCreate()
     )
-
-
 
 
 # Main Pipeline
