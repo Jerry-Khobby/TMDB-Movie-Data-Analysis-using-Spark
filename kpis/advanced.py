@@ -44,7 +44,7 @@ def advanced_tmdb_kpis(df: DataFrame, top_n: int = 10, log_dir: str = "/tmdbmovi
     def rank(df_kpi: DataFrame, col: str, order: str = "desc", filter_expr=None):
         if filter_expr is not None:
             df_kpi = df_kpi.filter(filter_expr)
-        window_spec = Window.orderBy(F.desc(col) if order == "desc" else F.asc(col))
+        window_spec = Window.orderBy((F.desc(col) if order == "desc" else F.asc(col)),F.desc("vote_count"))
         return df_kpi.withColumn("rank", F.row_number().over(window_spec)).filter(F.col("rank") <= top_n)
 
     # helper to log top rows
@@ -132,12 +132,3 @@ def advanced_tmdb_kpis(df: DataFrame, top_n: int = 10, log_dir: str = "/tmdbmovi
     return results
 
 
-
-""" from pyspark.sql import SparkSession
-
-spark = SparkSession.builder.appName("TMDB_advanced_analysis").getOrCreate()
-df_tmdb = spark.read.option("header", True).option("inferSchema", True).csv("/tmdbmovies/app/data/clean/tmdb_movies_clean.csv")
-
-results= advanced_tmdb_kpis(df_tmdb,top_n=10)
-print("Top 5 Highest Revenue Movies:")
-results["highest_revenue"].show(truncate=False) """

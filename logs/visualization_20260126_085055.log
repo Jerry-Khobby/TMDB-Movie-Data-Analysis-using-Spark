@@ -1,0 +1,8 @@
+2026-01-26 08:50:55,255 | INFO | Starting TMDB visualizations
+2026-01-26 08:50:55,262 | INFO | Loaded DataFrame from /tmdbmovies/app/data/clean/tmdb_movies_clean.csv with 18 rows
+2026-01-26 08:50:55,513 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/revenue_vs_budget.png
+2026-01-26 08:50:55,768 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/roi_by_genre.png
+2026-01-26 08:50:55,993 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/top10_popular_movies.png
+2026-01-26 08:50:56,160 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/yearly_box_office.png
+2026-01-26 08:50:56,315 | INFO | Saved plot: /tmdbmovies/app/data/diagrams/franchise_vs_standalone.png
+2026-01-26 08:50:56,316 | INFO | All TMDB visualizations completed

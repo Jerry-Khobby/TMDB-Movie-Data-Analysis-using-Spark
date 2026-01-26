@@ -12,9 +12,12 @@ from etl.transform import run_transformation
 # KPIs
 from kpis.kpis_ranking import compute_tmdb_kpis
 from kpis.advanced import advanced_tmdb_kpis
+from kpis.save_kpi_results import save_kpi_results
 
 # Visualization
 from visualisation import visualize_tmdb_from_url
+
+
 
 
 
@@ -25,11 +28,13 @@ LOG_DIR = f"{BASE_PATH}/logs"
 
 RAW_JSON = f"{DATA_PATH}/raw/tmdb_movies_raw.json"
 CLEAN_CSV = f"{DATA_PATH}/clean/tmdb_movies_clean.csv"
+KPI_OUTPUT_DIR = f"{DATA_PATH}/kpis"
 
 REQUIRED_DIRS = [
     f"{DATA_PATH}/raw",
     f"{DATA_PATH}/clean",
     f"{DATA_PATH}/diagrams",
+    KPI_OUTPUT_DIR,
     LOG_DIR,
 ]
 
@@ -69,6 +74,8 @@ def create_spark_session() -> SparkSession:
     )
 
 
+
+
 # Main Pipeline
 def main():
     setup_directories()
@@ -99,7 +106,17 @@ def main():
 
         basic_kpis = compute_tmdb_kpis(df_clean, top_n=10)
         advanced_kpis = advanced_tmdb_kpis(df_clean, top_n=10)
-
+        
+        save_kpi_results(
+        kpi_results=basic_kpis,
+        base_output_dir=KPI_OUTPUT_DIR,
+        kpi_group="basic"
+        )
+        save_kpi_results(
+        kpi_results=advanced_kpis,
+        base_output_dir=KPI_OUTPUT_DIR,
+        kpi_group="advanced"
+        )
         logger.info("Computed %d basic KPIs", len(basic_kpis))
         logger.info("Computed %d advanced KPIs", len(advanced_kpis))
 

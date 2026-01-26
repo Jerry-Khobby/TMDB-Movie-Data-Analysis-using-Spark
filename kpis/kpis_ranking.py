@@ -89,7 +89,7 @@ def compute_tmdb_kpis(
     def rank_movies(df_kpi: DataFrame, column: str, order: str, filter_expr: Optional[F.Column] = None) -> DataFrame:
         if filter_expr is not None:
             df_kpi = df_kpi.filter(filter_expr)
-        window_spec = Window.orderBy(F.desc(column) if order == "desc" else F.asc(column))
+        window_spec = Window.orderBy((F.desc(column) if order == "desc" else F.asc(column)),F.desc("vote_count"))
         return df_kpi.withColumn("rank", F.row_number().over(window_spec)).filter(F.col("rank") <= top_n)
 
     # Helper to log top rows
@@ -110,28 +110,3 @@ def compute_tmdb_kpis(
     logger.info(f"Total KPI outputs generated: {len(results)}")
 
     return results
-
-
-""" 
-spark = SparkSession.builder .appName("TMDB_KPI_Test").getOrCreate()
-
-
-
-
-
-csv_path = "/tmdbmovies/app/data/clean/tmdb_movies_clean.csv"
-
-df = spark.read.csv(csv_path, header=True, inferSchema=True)
-df.show(5)  
-df.printSchema()
-    
-kpi_results = compute_tmdb_kpis(df, top_n=5) 
-
-    # Verify results: show top 3 rows for each KPI
-for kpi_name, kpi_df in kpi_results.items():
-    print(f"\n=== {kpi_name.upper()} ===")
-    kpi_df.show(3, truncate=False) 
-    
-    
-    
-"""
